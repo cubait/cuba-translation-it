@@ -41,7 +41,7 @@ and click `Use in the project` button, and then press `OK`.
 
 | Platform Version | Add-on Version | Coordinates
 | ---------------- | -------------- | ------------
-| 6.10.*           | 6.10.0          | it.nexbit.cuba.translationit:translationit:6.10.0
+| 6.10.*           | 6.10.0          | it.nexbit.cuba.translationit:translationit-global:6.10.0
 
 The latest stable version is: `6.10.0`
 
