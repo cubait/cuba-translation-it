@@ -35,7 +35,7 @@ apply(plugin: 'cuba')
 cuba {
     artifact {
         group = 'it.nexbit.cuba.translationit'
-        version = "6.10.0"
+        version = "6.10.1"
         isSnapshot = false
     }
     tomcat {
