@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '6.10.4'
+    ext.cubaVersion = '6.10.5'
     repositories {
         
         maven {
@@ -35,7 +35,7 @@ apply(plugin: 'cuba')
 cuba {
     artifact {
         group = 'it.nexbit.cuba.translationit'
-        version = "6.10.1"
+        version = "6.10.2"
         isSnapshot = false
     }
     tomcat {
