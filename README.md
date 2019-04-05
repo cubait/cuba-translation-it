@@ -41,9 +41,10 @@ and click `Use in the project` button, and then press `OK`.
 
 | Platform Version | Add-on Version | Coordinates
 | ---------------- | -------------- | ------------
-| 6.10.*           | 6.10.2          | it.nexbit.cuba.translationit:translationit-global:6.10.2
+| 6.10.*           | 6.10.2         | it.nexbit.cuba.translationit:translationit-global:6.10.2
+| 7.0.*            | 7.0.0          | it.nexbit.cuba.translationit:translationit-global:7.0.0
 
-The latest stable version is: `6.10.2`
+The latest stable version is: `7.0.0`
 
 Add custom application component to your project. Using **CUBA Studio**, go to `PROJECT PROPERTIES` -> `Edit` and click `+` next to `Custom components`,
 then paste into the first field the appropriate coordinates for the desired version, picked from the table above.

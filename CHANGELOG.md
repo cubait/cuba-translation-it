@@ -2,6 +2,10 @@
 
 All releases are documented here. This project follows the same version of CUBA platform.
 
+## [7.0.0] - 2019-04-05
+
+- Translations for CUBA 7.0
+
 ## [6.10.2] - 2018-12-16
 
 - Fixed some missing translations in `gui` messages (see [this issue](https://github.com/cuba-platform/translations/issues/45) in the `cuba-framework/translations` repository)

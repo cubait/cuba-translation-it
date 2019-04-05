@@ -1,15 +1,13 @@
 
 buildscript {
-    ext.cubaVersion = '6.10.5'
+    ext.cubaVersion = '7.0.3'
     repositories {
-        
         maven {
-            url 'https://repo.cuba-platform.com/content/groups/work'
-            credentials {
-                username(rootProject.hasProperty('repoUser') ? rootProject['repoUser'] : 'cuba')
-                password(rootProject.hasProperty('repoPass') ? rootProject['repoPass'] : 'cuba123')
-            }
+            url 'https://dl.bintray.com/cuba-platform/main'
+            
         }
+        jcenter()
+
         
     }
     dependencies {
@@ -24,18 +22,15 @@ def globalModule = project(":${modulePrefix}-global")
 def coreModule = project(":${modulePrefix}-core")
 def webModule = project(":${modulePrefix}-web")
 def guiModule = project(":${modulePrefix}-gui")
-def desktopModule = project(":${modulePrefix}-desktop")
 
 def servletApi = 'javax.servlet:javax.servlet-api:3.1.0'
 
-
-apply(plugin: 'idea')
 apply(plugin: 'cuba')
 
 cuba {
     artifact {
         group = 'it.nexbit.cuba.translationit'
-        version = "6.10.2"
+        version = '7.0.0'
         isSnapshot = false
     }
     tomcat {
@@ -45,15 +40,13 @@ cuba {
 
 dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
-
 }
 
 def hsql = 'org.hsqldb:hsqldb:2.2.9'
 
-configure([globalModule, coreModule, webModule, guiModule, desktopModule]) {
+configure([globalModule, coreModule, webModule, guiModule]) {
     apply(plugin: 'java')
     apply(plugin: 'maven')
-    apply(plugin: 'idea')
     apply(plugin: 'cuba')
 
     dependencies {
@@ -71,6 +64,13 @@ configure([globalModule, coreModule, webModule, guiModule, desktopModule]) {
 }
 
 configure(globalModule) {
+    dependencies {
+        if (!JavaVersion.current().isJava8()) {
+            runtime('javax.xml.bind:jaxb-api:2.3.1')
+            runtime('org.glassfish.jaxb:jaxb-runtime:2.3.1')
+        }
+    }
+
     entitiesEnhancing {
         main {
             enabled = true
@@ -83,8 +83,6 @@ configure(globalModule) {
             attributes('App-Component-Version': cuba.artifact.version + (cuba.artifact.isSnapshot ? '-SNAPSHOT' : ''))
         }
     }
-
-    
 }
 
 configure(coreModule) {
@@ -96,10 +94,9 @@ configure(coreModule) {
 
     dependencies {
         compile(globalModule)
-        provided(servletApi)
+        compileOnly(servletApi)
         jdbc(hsql)
         testRuntime(hsql)
-
     }
 
     task cleanConf(description: 'Cleans up conf directory') {
@@ -120,7 +117,7 @@ configure(coreModule) {
 
     task createDb(dependsOn: assembleDbScripts, description: 'Creates local database', type: CubaDbCreation) {
         dbms = 'hsql'
-        host = 'localhost'
+        host = 'localhost:9010'
         dbName = 'translationit'
         dbUser = 'sa'
         dbPassword = ''
@@ -128,18 +125,16 @@ configure(coreModule) {
 
     task updateDb(dependsOn: assembleDbScripts, description: 'Updates local database', type: CubaDbUpdate) {
         dbms = 'hsql'
-        host = 'localhost'
+        host = 'localhost:9010'
         dbName = 'translationit'
         dbUser = 'sa'
         dbPassword = ''
     }
 }
 
-
 configure(guiModule) {
     dependencies {
         compile(globalModule)
-        
     }
 
     task deployConf(type: Copy) {
@@ -148,18 +143,17 @@ configure(guiModule) {
         into "$cuba.tomcat.dir/conf/${modulePrefix}"
     }
 }
-    
+
 configure(webModule) {
     configurations {
         webcontent
     }
 
     dependencies {
-        provided(servletApi)
+        compileOnly(servletApi)
         compile(guiModule)
-
     }
-    
+
     task webArchive(type: Zip) {
         from file("$buildDir/web")
         from file('web')
@@ -198,50 +192,10 @@ configure(webModule) {
     }
 }
 
-configure(desktopModule) {
-    apply(plugin: 'application')
-    mainClassName = 'it.nexbit.cuba.translationit.desktop.App'
-
-    dependencies {
-        compile(guiModule)
-        
-    }
-    assemble.dependsOn = [ classes ]
-
-    jar {
-        manifest {
-            attributes("Permissions": "all-permissions")
-        }
-    }
-
-    installDist {
-        into("${projectDir}/../../deploy/" + applicationName)
-    }
-
-    task deploy(dependsOn: installDist)
-
-    task createWebStart(dependsOn: [assemble, jar], type: CubaWebStartCreation) {
-        signJarsKeystore = "${projectDir}/webstart/sign-jars-keystore.jks"
-        signJarsAlias = 'signJars'
-        signJarsPassword = 'HaulmontSignJars'
-        indexFileName = "${projectDir}/webstart/index.html"
-        basePath = "${modulePrefix}-webstart"
-    }
-
-    task deployWebStart(dependsOn: createWebStart, type: CubaWebStartDeployment) {
-        basePath = "${modulePrefix}-webstart"
-    }
-}
-
-
-
-
-
 task undeploy(type: Delete, dependsOn: ":${modulePrefix}-web:cleanConf") {
     delete("$cuba.tomcat.dir/shared")
     delete("$cuba.tomcat.dir/webapps/${modulePrefix}-core")
     delete("$cuba.tomcat.dir/webapps/${modulePrefix}")
-    delete("$cuba.tomcat.dir/webapps/${modulePrefix}-webstart")
 }
 
 task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefix}-web:deploy"], description: 'Redeploys applications and restarts local Tomcat') {
@@ -253,10 +207,6 @@ task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefi
         }
         start.execute()
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.3.1'
 }
 
 apply from: 'publish.gradle';
