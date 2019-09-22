@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '7.0.3'
+    ext.cubaVersion = '7.1.0'
     repositories {
         maven {
             url 'https://dl.bintray.com/cuba-platform/main'
@@ -30,7 +30,7 @@ apply(plugin: 'cuba')
 cuba {
     artifact {
         group = 'it.nexbit.cuba.translationit'
-        version = '7.0.0'
+        version = '7.1.0'
         isSnapshot = false
     }
     tomcat {
@@ -42,7 +42,7 @@ dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
 }
 
-def hsql = 'org.hsqldb:hsqldb:2.2.9'
+def hsql = 'org.hsqldb:hsqldb:2.4.1'
 
 configure([globalModule, coreModule, webModule, guiModule]) {
     apply(plugin: 'java')
