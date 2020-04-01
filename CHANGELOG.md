@@ -2,6 +2,10 @@
 
 All releases are documented here. This project follows the same version of CUBA platform.
 
+## [7.2.0] - 2020-04-01
+
+- Translations for CUBA 7.2
+
 ## [7.1.0] - 2019-09-22
 
 - Translations for CUBA 7.1
