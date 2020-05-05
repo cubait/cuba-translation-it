@@ -18,9 +18,9 @@ The following table shows which version of the add-on is compatible with which v
 | 6.10.*           | 6.10.2         | it.nexbit.cuba.translationit:translationit-global:6.10.2
 | 7.0.*            | 7.0.0          | it.nexbit.cuba.translationit:translationit-global:7.0.0
 | 7.1.*            | 7.1.0          | it.nexbit.cuba.translationit:translationit-global:7.1.0
-| 7.2.*            | 7.2.0          | it.nexbit.cuba.translationit:translationit-global:7.2.0
+| 7.2.*            | 7.2.1          | it.nexbit.cuba.translationit:translationit-global:7.2.1
 
-The latest stable version is: `7.2.0`
+The latest stable version is: `7.2.1`
 
 ## Supported DBMS engines
 

@@ -2,6 +2,11 @@
 
 All releases are documented here. This project follows the same version of CUBA platform.
 
+## [7.2.1] - 2020-05-05
+
+- Fixed a label in `gui` messages (for Reports add-on)
+- Fixed `global` messages for Reports add-on not translating
+
 ## [7.2.0] - 2020-04-01
 
 - Translations for CUBA 7.2
